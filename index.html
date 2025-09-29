@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Menù Famiglia</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="container">
+<header><h1>🍳 Menù Famiglia</h1></header>
+<button id="resetBtn" class="btn-reset">Resetta settimana</button>
+<div class="menu-grid">
+  <div class="days-col">
+    <div>L</div><div>M</div><div>M</div><div>G</div><div>V</div><div>S</div><div>D</div>
+  </div>
+  <div class="meals-col">
+    <div class="meal-col"><div class="meal-title">☕ Colazione</div><div id="colazione" class="meal-list"></div></div>
+    <div class="meal-col"><div class="meal-title">🍽️ Pranzo</div><div id="pranzo" class="meal-list"></div></div>
+    <div class="meal-col"><div class="meal-title">🌙 Cena</div><div id="cena" class="meal-list"></div></div>
+  </div>
+</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
