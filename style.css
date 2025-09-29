@@ -84,3 +84,26 @@ header {
 .btn-reset:hover {
   background-color: #d75842;
 }
+
+.meal-list {
+  padding: 0.5rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.btn-reset {
+  display: block;
+  margin: 0 0 1rem auto;
+  padding: 0.6rem 1.2rem;
+  background-color: #f28482;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-reset:hover {
+  background-color: #d75842;
+}
