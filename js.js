@@ -1,4 +1,3 @@
-// CONFIGURAZIONE FIREBASE (sostituisci con la tua config)
 const firebaseConfig = {
   apiKey: "AIzaSyChjVcwytkIYVSfxv9_8gVpQlfhAX509es",
   authDomain: "menu--settimanale.firebaseapp.com",
