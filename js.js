@@ -1,12 +1,13 @@
 // CONFIGURAZIONE FIREBASE (modifica con i tuoi dati)
 // CONFIGURAZIONE FIREBASE (sostituisci con la tua config Firebase)
 const firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "PROGETTO.firebaseapp.com",
-  projectId: "PROGETTO",
-  storageBucket: "PROGETTO.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  apiKey: "AIzaSyChjVcwytkIYVSfxv9_8gVpQlfhAX509es",
+  authDomain: "menu--settimanale.firebaseapp.com",
+  projectId: "menu--settimanale",
+  storageBucket: "menu--settimanale.firebasestorage.app",
+  messagingSenderId: "206324209751",
+  appId: "1:206324209751:web:cc6ddd29e53c4324932b12",
+  measurementId: "G-SK8CFFGSKV"
 };
 
 // Inizializza Firebase
@@ -107,4 +108,5 @@ caricaMenu();
 
 // Chiamata iniziale per caricare il menu
 caricaMenu();
+
 
