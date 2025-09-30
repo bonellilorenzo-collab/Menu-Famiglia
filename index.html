@@ -40,8 +40,35 @@
   </button>
 
   <div class="menu-grid grid grid-cols-[20px_repeat(3,_1fr)] gap-4">
-    <div class="days-col flex flex-col font-bold text-orange-600 text-center select-none">
-      <div>L</div><div>M</div><div>M</div><div>G</div><div>V</div><div>S</div><div>D</div>
+    <div class="days-col flex flex-col font-bold text-orange-600 text-center select-none space-y-2">
+      <div class="flex justify-center items-center gap-1">
+        L
+        <button onclick="resetGiorno('Lunedì')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
+      <div class="flex justify-center items-center gap-1">
+        M
+        <button onclick="resetGiorno('Martedì')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
+      <div class="flex justify-center items-center gap-1">
+        M
+        <button onclick="resetGiorno('Mercoledì')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
+      <div class="flex justify-center items-center gap-1">
+        G
+        <button onclick="resetGiorno('Giovedì')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
+      <div class="flex justify-center items-center gap-1">
+        V
+        <button onclick="resetGiorno('Venerdì')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
+      <div class="flex justify-center items-center gap-1">
+        S
+        <button onclick="resetGiorno('Sabato')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
+      <div class="flex justify-center items-center gap-1">
+        D
+        <button onclick="resetGiorno('Domenica')" class="text-red-500 hover:text-red-700 text-sm">Reset</button>
+      </div>
     </div>
     <div class="meals-col flex gap-4">
       <div class="meal-col flex flex-col max-h-[400px] overflow-auto border-2 border-orange-300 rounded bg-orange-50">
@@ -78,3 +105,4 @@
 <script src="app.js"></script>
 </body>
 </html>
+

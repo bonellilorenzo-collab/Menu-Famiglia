@@ -41,7 +41,7 @@ function mostraToast(messaggio, tipo = "info") {
   }).showToast();
 }
 
-// Pulsante reset
+// Pulsante reset generale
 document.getElementById('resetBtn').addEventListener('click', () => {
   if(confirm('Sei sicuro di voler resettare il menù per tutta la settimana?')) {
     db.collection('menu').get().then(snapshot => {
@@ -50,6 +50,17 @@ document.getElementById('resetBtn').addEventListener('click', () => {
     });
   }
 });
+
+// Funzione per resettare il menù di un singolo giorno (tutti i pasti)
+function resetGiorno(giorno) {
+  if (confirm(`Sei sicuro di voler resettare il menù per ${giorno}?`)) {
+    pasti.forEach(pasto => {
+      const key = `${giorno}-${pasto}`;
+      db.collection('menu').doc(key).delete();
+    });
+    mostraToast(`Menù di ${giorno} resettato con successo.`, "info");
+  }
+}
 
 // Carica dati in tempo reale
 function caricaMenu() {
