@@ -11,6 +11,25 @@
 <body>
 <div class="container">
 <header><h1>🍳 Menù Famiglia</h1></header>
+<div id="filters" style="margin-bottom:1rem;">
+  <strong>Filtra giorni:</strong>
+  <label><input type="checkbox" class="filter-day" value="Lunedì" checked />Lun</label>
+  <label><input type="checkbox" class="filter-day" value="Martedì" checked />Mar</label>
+  <label><input type="checkbox" class="filter-day" value="Mercoledì" checked />Mer</label>
+  <label><input type="checkbox" class="filter-day" value="Giovedì" checked />Gio</label>
+  <label><input type="checkbox" class="filter-day" value="Venerdì" checked />Ven</label>
+  <label><input type="checkbox" class="filter-day" value="Sabato" checked />Sab</label>
+  <label><input type="checkbox" class="filter-day" value="Domenica" checked />Dom</label>
+  <br>
+  <strong>Filtra pasti:</strong>
+  <label><input type="checkbox" class="filter-meal" value="colazione" checked />Colazione</label>
+  <label><input type="checkbox" class="filter-meal" value="pranzo" checked />Pranzo</label>
+  <label><input type="checkbox" class="filter-meal" value="cena" checked />Cena</label>
+</div>
+
+<div class="menu-grid">
+  <!-- Qui prosegue la struttura dell'app -->
+</div>
 <button id="resetBtn" class="btn-reset">Resetta settimana</button>
 <div class="menu-grid">
   <div class="days-col">

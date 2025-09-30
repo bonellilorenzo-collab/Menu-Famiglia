@@ -15,6 +15,9 @@ const db = firebase.firestore();
 const giorni = ["Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato","Domenica"];
 const pasti = ["colazione","pranzo","cena"];
 
+let selectedDays = [...giorni];
+let selectedMeals = [...pasti];
+
 let menuData = {};
 let currentUser = null;
 
@@ -37,6 +40,23 @@ function caricaMenu() {
     aggiornaUI();
   });
 }
+
+function setupFilters() {
+  document.querySelectorAll('.filter-day').forEach(cb => {
+    cb.addEventListener('change', () => {
+      selectedDays = Array.from(document.querySelectorAll('.filter-day:checked')).map(e => e.value);
+      aggiornaUI();
+    });
+  });
+  document.querySelectorAll('.filter-meal').forEach(cb => {
+    cb.addEventListener('change', () => {
+      selectedMeals = Array.from(document.querySelectorAll('.filter-meal:checked')).map(e => e.value);
+      aggiornaUI();
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', setupFilters);
 
 // Aggiungi piatto
 function aggiungiPiatto(giorno,pasto) {
@@ -81,8 +101,15 @@ function votaPiatto(giorno,pasto,nomePiatto) {
 function aggiornaUI() {
   pasti.forEach(pasto => {
     const container = document.getElementById(pasto);
+    if (!selectedMeals.includes(pasto)) {
+      container.style.display = 'none';
+      return;
+    } else {
+      container.style.display = '';
+    }
     container.innerHTML = '';
     giorni.forEach(giorno => {
+      if (!selectedDays.includes(giorno)) return;
       const key = `${giorno}-${pasto}`;
       const piatti = menuData[key]?.piatti || [];
       const divGiorno = document.createElement('div');
@@ -90,7 +117,7 @@ function aggiornaUI() {
       divGiorno.style.marginBottom = '0.5rem';
       let content = `<strong>${giorno}</strong> `;
       content += `<button class="btn-add" onclick="aggiungiPiatto('${giorno}','${pasto}')">+ Aggiungi</button><br/>`;
-      piatti.sort((a,b) => b.voti - a.voti);
+      piatti.sort((a, b) => b.voti - a.voti);
       piatti.forEach(p => {
         content += `<div>${p.nome} <span>(${p.voti})</span> <button onclick="votaPiatto('${giorno}','${pasto}','${p.nome}')">👍</button></div>`;
       });
@@ -99,6 +126,5 @@ function aggiornaUI() {
     });
   });
 }
-
 // Avvia caricamento dati
 caricaMenu();

@@ -1,0 +1,109 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fff8f0;
+  margin: 0; padding: 1rem;
+  color: #333;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #a74f24;
+}
+
+.menu-grid {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.days-col {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: #d75842;
+  width: 20px;
+  justify-content: space-between;
+  margin-top: 1.3rem;
+  user-select:none;
+}
+
+.days-col div {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f5c6b1;
+}
+
+.meals-col {
+  display: flex;
+  flex: 1;
+  gap: 0.5rem;
+}
+
+.meal-col {
+  flex: 1;
+  border: 2px solid #f2a365;
+  border-radius: 10px;
+  background: #fff1e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.meal-title {
+  font-weight: 700;
+  padding: 0.8rem;
+  text-align: center;
+  background: #f28482;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #fff;
+}
+
+.meal-list {
+  padding: 0.5rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.btn-reset {
+  display: block;
+  margin: 0 0 1rem auto;
+  padding: 0.6rem 1.2rem;
+  background-color: #f28482;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-reset:hover {
+  background-color: #d75842;
+}
+
+.meal-list {
+  padding: 0.5rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.btn-reset {
+  display: block;
+  margin: 0 0 1rem auto;
+  padding: 0.6rem 1.2rem;
+  background-color: #f28482;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-reset:hover {
+  background-color: #d75842;
+}
