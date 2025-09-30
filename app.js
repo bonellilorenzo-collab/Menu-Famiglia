@@ -21,11 +21,32 @@ let selectedMeals = [...pasti];
 let menuData = {};
 let currentUser = null;
 
+let modalPiatto = null;
+let formPiatto = null;
+let inputNomePiatto = null;
+let modalGiorno = null;
+let modalPasto = null;
+
+function mostraToast(messaggio, tipo = "info") {
+  let bgColor = "linear-gradient(to right, #00b09b, #96c93d)"; // verde per info/success
+  if(tipo === "error") bgColor = "linear-gradient(to right, #ff5f6d, #ffc371)"; // rosso per errori
+  Toastify({
+    text: messaggio,
+    duration: 3000,
+    close: true,
+    gravity: "top",
+    position: "right",
+    backgroundColor: bgColor,
+    stopOnFocus: true,
+  }).showToast();
+}
+
 // Pulsante reset
 document.getElementById('resetBtn').addEventListener('click', () => {
   if(confirm('Sei sicuro di voler resettare il menù per tutta la settimana?')) {
     db.collection('menu').get().then(snapshot => {
       snapshot.forEach(doc => db.collection('menu').doc(doc.id).delete());
+      mostraToast('Menù resettato con successo.', 'info');
     });
   }
 });
@@ -41,6 +62,7 @@ function caricaMenu() {
   });
 }
 
+// Setup filtri per giorni e pasti
 function setupFilters() {
   document.querySelectorAll('.filter-day').forEach(cb => {
     cb.addEventListener('change', () => {
@@ -56,23 +78,65 @@ function setupFilters() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', setupFilters);
+// Setup modal inserimento piatto
+function setupModal() {
+  modalPiatto = document.getElementById('modalPiatto');
+  formPiatto = document.getElementById('formPiatto');
+  inputNomePiatto = document.getElementById('inputNomePiatto');
+  const btnAnnulla = document.getElementById('btnAnnulla');
 
-// Aggiungi piatto
-function aggiungiPiatto(giorno,pasto) {
+  btnAnnulla.addEventListener('click', () => {
+    chiudiModal();
+  });
+
+  formPiatto.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nomePiatto = inputNomePiatto.value.trim();
+    if (nomePiatto && modalGiorno && modalPasto) {
+      aggiungiPiattoConNome(modalGiorno, modalPasto, nomePiatto);
+      chiudiModal();
+    }
+  });
+}
+
+function apriModal(giorno, pasto) {
+  modalGiorno = giorno;
+  modalPasto = pasto;
+  inputNomePiatto.value = '';
+  modalPiatto.classList.remove('hidden');
+  inputNomePiatto.focus();
+}
+
+function chiudiModal() {
+  modalPiatto.classList.add('hidden');
+  modalGiorno = null;
+  modalPasto = null;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupFilters();
+  setupModal();
+});
+
+// Aggiungi piatto (apre modal)
+function aggiungiPiatto(giorno, pasto) {
   if (!currentUser) {
     currentUser = prompt('Inserisci il tuo nome:');
     if (!currentUser) {
-      alert('Nome necessario per aggiungere piatti.');
+      mostraToast('Nome necessario per aggiungere piatti.', 'error');
       return;
     }
   }
-  const nomePiatto = prompt(`Aggiungi piatto per ${giorno} - ${pasto}:`);
-  if(!nomePiatto) return;
+  apriModal(giorno, pasto);
+}
+
+// Aggiungi piatto con nome dal modal
+function aggiungiPiattoConNome(giorno, pasto, nomePiatto) {
   const key = `${giorno}-${pasto}`;
   const piatti = menuData[key]?.piatti || [];
   piatti.push({ nome: nomePiatto, voti: 0, votanti: [] });
   db.collection('menu').doc(key).set({ piatti });
+  mostraToast(`Piatto "${nomePiatto}" aggiunto per ${giorno} - ${pasto}.`, "info");
 }
 
 // Vota piatto
@@ -80,7 +144,7 @@ function votaPiatto(giorno,pasto,nomePiatto) {
   if (!currentUser) {
     currentUser = prompt('Inserisci il tuo nome:');
     if (!currentUser) {
-      alert('Nome necessario per votare.');
+      mostraToast('Nome necessario per votare.', 'error');
       return;
     }
   }
@@ -89,12 +153,13 @@ function votaPiatto(giorno,pasto,nomePiatto) {
   const piatto = piatti.find(p => p.nome === nomePiatto);
   if (!piatto) return;
   if (piatto.votanti.includes(currentUser)) {
-    alert('Hai già votato questo piatto.');
+    mostraToast('Hai già votato questo piatto.', 'error');
     return;
   }
   piatto.voti ++;
   piatto.votanti.push(currentUser);
   db.collection('menu').doc(key).set({ piatti });
+  mostraToast(`Hai votato "${nomePiatto}" per ${giorno} - ${pasto}.`, "info");
 }
 
 // Aggiorna l'interfaccia
@@ -116,15 +181,17 @@ function aggiornaUI() {
       divGiorno.style.borderBottom = '1px solid #f5c6b1';
       divGiorno.style.marginBottom = '0.5rem';
       let content = `<strong>${giorno}</strong> `;
-      content += `<button class="btn-add" onclick="aggiungiPiatto('${giorno}','${pasto}')">+ Aggiungi</button><br/>`;
+      content += `<button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-2 rounded" onclick="aggiungiPiatto('${giorno}','${pasto}')">+ Aggiungi</button><br/>`;
       piatti.sort((a, b) => b.voti - a.voti);
       piatti.forEach(p => {
-        content += `<div>${p.nome} <span>(${p.voti})</span> <button onclick="votaPiatto('${giorno}','${pasto}','${p.nome}')">👍</button></div>`;
+        content += `<div>${p.nome} <span>(${p.voti})</span> <button class="bg-blue-500 hover:bg-blue-600 text-white px-2 rounded" onclick="votaPiatto('${giorno}','${pasto}','${p.nome}')">👍</button></div>`;
       });
       divGiorno.innerHTML = content;
       container.appendChild(divGiorno);
     });
   });
 }
+
 // Avvia caricamento dati
 caricaMenu();
+

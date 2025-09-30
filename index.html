@@ -4,43 +4,76 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Menù Famiglia</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Libreria Toastify per notifiche toast -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
-<div class="container">
-<header><h1>🍳 Menù Famiglia</h1></header>
-<div id="filters" style="margin-bottom:1rem;">
-  <strong>Filtra giorni:</strong>
-  <label><input type="checkbox" class="filter-day" value="Lunedì" checked />Lun</label>
-  <label><input type="checkbox" class="filter-day" value="Martedì" checked />Mar</label>
-  <label><input type="checkbox" class="filter-day" value="Mercoledì" checked />Mer</label>
-  <label><input type="checkbox" class="filter-day" value="Giovedì" checked />Gio</label>
-  <label><input type="checkbox" class="filter-day" value="Venerdì" checked />Ven</label>
-  <label><input type="checkbox" class="filter-day" value="Sabato" checked />Sab</label>
-  <label><input type="checkbox" class="filter-day" value="Domenica" checked />Dom</label>
-  <br>
-  <strong>Filtra pasti:</strong>
-  <label><input type="checkbox" class="filter-meal" value="colazione" checked />Colazione</label>
-  <label><input type="checkbox" class="filter-meal" value="pranzo" checked />Pranzo</label>
-  <label><input type="checkbox" class="filter-meal" value="cena" checked />Cena</label>
-</div>
+<div class="container mx-auto px-4">
+  
+  <header class="text-center my-6">
+    <h1 class="text-4xl font-bold text-orange-500">🍳 Menù Famiglia</h1>
+  </header>
 
-<div class="menu-grid">
-  <!-- Qui prosegue la struttura dell'app -->
-</div>
-<button id="resetBtn" class="btn-reset">Resetta settimana</button>
-<div class="menu-grid">
-  <div class="days-col">
-    <div>L</div><div>M</div><div>M</div><div>G</div><div>V</div><div>S</div><div>D</div>
+  <div id="filters" style="margin-bottom:1rem;">
+    <strong>Filtra giorni:</strong>
+    <label><input type="checkbox" class="filter-day" value="Lunedì" checked />Lun</label>
+    <label><input type="checkbox" class="filter-day" value="Martedì" checked />Mar</label>
+    <label><input type="checkbox" class="filter-day" value="Mercoledì" checked />Mer</label>
+    <label><input type="checkbox" class="filter-day" value="Giovedì" checked />Gio</label>
+    <label><input type="checkbox" class="filter-day" value="Venerdì" checked />Ven</label>
+    <label><input type="checkbox" class="filter-day" value="Sabato" checked />Sab</label>
+    <label><input type="checkbox" class="filter-day" value="Domenica" checked />Dom</label>
+    <br>
+    <strong>Filtra pasti:</strong>
+    <label><input type="checkbox" class="filter-meal" value="colazione" checked />Colazione</label>
+    <label><input type="checkbox" class="filter-meal" value="pranzo" checked />Pranzo</label>
+    <label><input type="checkbox" class="filter-meal" value="cena" checked />Cena</label>
   </div>
-  <div class="meals-col">
-    <div class="meal-col"><div class="meal-title">☕ Colazione</div><div id="colazione" class="meal-list"></div></div>
-    <div class="meal-col"><div class="meal-title">🍽️ Pranzo</div><div id="pranzo" class="meal-list"></div></div>
-    <div class="meal-col"><div class="meal-title">🌙 Cena</div><div id="cena" class="meal-list"></div></div>
+
+  <button id="resetBtn" class="bg-orange-400 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow mb-4">
+    Resetta settimana
+  </button>
+
+  <div class="menu-grid grid grid-cols-[20px_repeat(3,_1fr)] gap-4">
+    <div class="days-col flex flex-col font-bold text-orange-600 text-center select-none">
+      <div>L</div><div>M</div><div>M</div><div>G</div><div>V</div><div>S</div><div>D</div>
+    </div>
+    <div class="meals-col flex gap-4">
+      <div class="meal-col flex flex-col max-h-[400px] overflow-auto border-2 border-orange-300 rounded bg-orange-50">
+        <div class="meal-title">☕ Colazione</div>
+        <div id="colazione" class="meal-list"></div>
+      </div>
+      <div class="meal-col flex flex-col max-h-[400px] overflow-auto border-2 border-orange-300 rounded bg-orange-50">
+        <div class="meal-title">🍽️ Pranzo</div>
+        <div id="pranzo" class="meal-list"></div>
+      </div>
+      <div class="meal-col flex flex-col max-h-[400px] overflow-auto border-2 border-orange-300 rounded bg-orange-50">
+        <div class="meal-title">🌙 Cena</div>
+        <div id="cena" class="meal-list"></div>
+      </div>
+    </div>
   </div>
-</div>
+
+  <!-- Modal inserimento piatto -->
+  <div id="modalPiatto" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
+      <h2 class="text-xl font-semibold mb-4">Aggiungi nuovo piatto</h2>
+      <form id="formPiatto" class="flex flex-col gap-4">
+        <label class="font-semibold">Nome piatto:</label>
+        <input type="text" id="inputNomePiatto" class="border border-gray-300 rounded px-3 py-2" required />
+        <div class="flex justify-end gap-4 mt-4">
+          <button type="button" id="btnAnnulla" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Annulla</button>
+          <button type="submit" class="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600">Aggiungi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
 <script src="app.js"></script>
 </body>
